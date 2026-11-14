@@ -37,9 +37,12 @@ def expanded_help_center_blob() -> str:
         "Does not change customer policy unless an article id is cited.\n"
     )
     chunks = [base]
+    total_tokens = count_tokens(base)
     i = 0
-    while count_tokens("\n".join(chunks)) < 210_000:
-        chunks.append(filler + f"Batch {i}\n" + ("-" * 40 + "\n") * 30)
+    while total_tokens < 210_000:
+        chunk = filler + f"Batch {i}\n" + ("-" * 40 + "\n") * 30
+        chunks.append(chunk)
+        total_tokens += count_tokens("\n" + chunk)
         i += 1
     return "\n".join(chunks)
 

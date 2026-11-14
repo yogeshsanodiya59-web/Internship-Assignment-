@@ -24,7 +24,14 @@ def test_holdout_subscription():
 
 
 def test_baseline_cost_is_high():
-    copilot = SupportCopilot()
+    copilot = SupportCopilot(baseline=True)
     for tid in PUBLIC:
         copilot.handle_ticket(tid)
     assert copilot.session.total_points() > 15_000
+
+
+def test_optimized_cost_meets_target():
+    copilot = SupportCopilot()
+    for tid in PUBLIC:
+        copilot.handle_ticket(tid)
+    assert copilot.session.total_points() <= 12_000
